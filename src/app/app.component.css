@@ -1,0 +1,50 @@
+.form-row mat-form-field{
+    margin-right: 20px;
+}
+
+.form-row {
+    margin-bottom: 15px;
+}
+
+.bus {
+    height: 200px;
+    width: 80%;
+    display: flex;
+    flex-wrap: wrap;
+    border-radius: 40px;
+    border: 1px solid black;
+    margin: 0 auto;
+}
+
+.fila {
+    width: 95%;
+    height: 75px;
+    margin: 10px auto;
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: column;
+}
+.silla {
+    width: 25px;
+    height: 25px;
+    margin: 6px;
+    color: white;
+    text-align: center;
+    cursor: default
+}
+
+.silla-ocupada {
+    background: #d50000;
+}
+
+.silla-libre {
+    background: #64dd17;
+}
+
+.silla-libre:hover{
+    background: blue;
+}
+
+.silla-ida-seleccionada, .silla-regreso-seleccionada{
+    background: blue;
+}
