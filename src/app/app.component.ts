@@ -142,16 +142,16 @@ export class AppComponent implements OnInit {
       let travelHour = parseInt(travel.departure_hour.split(":")[0]);
       let currentHour = new Date().getHours()
       
-      console.log(travelHour, currentHour, todayDate, dateSelected);
+      //console.log(travelHour, currentHour, todayDate, dateSelected);
       if( dateSelected == travelDate){
 
         if((todayDate != dateSelected)){
-          this.goingHoursTravels.push({ "+id_departure_hour": travel.id_departure_hour, "hour": travel.departure_hour});
-          console.log(travelHour, currentHour, "IF");
+          this.goingHoursTravels.push({ "id_departure_hour": travel.id_departure_hour, "hour": travel.departure_hour});
+          //console.log(travelHour, currentHour, "IF");
         }
         else if (todayDate == dateSelected && travelHour > currentHour) {
           this.goingHoursTravels.push({ "id_departure_hour": travel.id_departure_hour, "hour": travel.departure_hour});
-          console.log(travelHour, currentHour);
+          //console.log(travelHour, currentHour);
         }
       }
       
