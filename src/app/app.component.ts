@@ -22,7 +22,9 @@ export class AppComponent implements OnInit {
   returnTravels:any[];
 
   goingHoursTravels = [];
-  goingClassesTravels = []
+  goingClassesTravels = [];
+
+  goingAvaliableSeats = [];
 
   // STRIPE
   elements: Elements;
@@ -49,6 +51,7 @@ export class AppComponent implements OnInit {
       fechaSalida: ['', Validators.required ],
       horaSalida: ['', Validators.required],
       claseSalida: ['', Validators.required],
+      sillaSalida: ['', Validators.required],
       fechaRegreso: '',
     });
 
@@ -132,6 +135,7 @@ export class AppComponent implements OnInit {
     this.searchForm.controls.claseSalida.reset();
     this.goingHoursTravels = [];
     this.goingClassesTravels = [];
+    this.goingAvaliableSeats
 
     let dateSelected = new Date(event.value).toISOString().split('T')[0];
     console.log("dateSelected:", dateSelected);
@@ -165,6 +169,7 @@ export class AppComponent implements OnInit {
     this.goingTravels = [];
     this.goingHoursTravels = [];
     this.goingClassesTravels = [];
+    this.goingAvaliableSeats
     this.returnTravels = [];
     
     this.http.get("https://api-adonis-run-lite.herokuapp.com/api/v1/travels/filter/"+id)
@@ -175,9 +180,7 @@ export class AppComponent implements OnInit {
   }
 
   vacantSeat(index_silla){
-    if(index_silla % 2 == 0)
-      return false;
-    return true;
+    return this.goingAvaliableSeats.includes(index_silla);
   }
 
   selectSeat(event, classAdd){
@@ -194,6 +197,7 @@ export class AppComponent implements OnInit {
       classList.add(classAdd);
       
       if(classAdd == 'silla-ida-seleccionada'){
+        this.searchForm.value.sillaSalida = elemId;
         console.log("silla ida:", elemId)
       }else{
         console.log("silla regreso:", elemId)
@@ -203,6 +207,34 @@ export class AppComponent implements OnInit {
   }
 
   hourGoingSelected(hour){
-    console.log(hour)
+    this.searchForm.controls.claseSalida.reset();
+    this.goingClassesTravels = [];
+    this.goingAvaliableSeats = []
+    
+    for(let travel of this.goingTravels){
+      let travelDate = new Date(travel.departure_date).toISOString().split('T')[0];
+      let travelDateSelected = this.searchForm.value.fechaSalida.toISOString().split('T')[0];
+      //console.log(travel.departure_hour, hour, "&&", travelDate, travelDateSelected)
+      
+      if(travel.departure_hour == hour && travelDate == travelDateSelected){
+        this.goingClassesTravels.push(travel.class)
+      }
+    }
+  }
+
+  classGoingSelected(classs){
+    for(let travel of this.goingTravels){
+      let travelDate = new Date(travel.departure_date).toISOString().split('T')[0];
+      let travelDateSelected = this.searchForm.value.fechaSalida.toISOString().split('T')[0];
+      let hourSelected = this.searchForm.value.horaSalida;
+      let classSelected = classs;
+      console.log(travelDate, travelDateSelected, hourSelected, classSelected);
+
+      if(travelDate == travelDateSelected && travel.id_departure_hour == hourSelected && travel.class == classSelected){
+        this.goingAvaliableSeats = travel.available_seats;
+        console.log(this.goingAvaliableSeats);
+        return;
+      }
+    }
   }
 }

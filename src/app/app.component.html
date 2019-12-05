@@ -42,8 +42,8 @@
 
           <mat-form-field>
             <mat-label>Clase</mat-label>
-            <mat-select>
-              <mat-option formControlName="claseSalida" *ngFor="let class of goingClassesTravels" [value]="class">
+            <mat-select formControlName="claseSalida">
+              <mat-option *ngFor="let class of goingClassesTravels" [value]="class" (click)="classGoingSelected(class)">
                 {{ class }}
               </mat-option>
             </mat-select>
@@ -54,14 +54,14 @@
           <div class="bus">
             <div class="fila">
               <div class="silla" *ngFor="let item of [].constructor(24); let i = index" 
-              [ngClass]="vacantSeat(i) ? 'silla-libre' : 'silla-ocupada'" (click)="selectSeat($event, 'silla-ida-seleccionada')" id="{{i+100}}">
+              [ngClass]="vacantSeat(i+1) ? 'silla-libre' : 'silla-ocupada'" (click)="selectSeat($event, 'silla-ida-seleccionada')" id="{{i+1}}">
                 {{ i + 1}}
               </div>
             </div>
             <div class="fila">
-              <div class="silla" *ngFor="let item of [].constructor(24); let i = index" 
-                [ngClass]="vacantSeat(i) ? 'silla-libre' : 'silla-ocupada'" (click)="selectSeat($event, 'silla-ida-seleccionada')" id="{{i+200}}">
-                {{ i + 1}}
+              <div class="silla" *ngFor="let item of [].constructor(26); let i = index" 
+                [ngClass]="vacantSeat(i+25) ? 'silla-libre' : 'silla-ocupada'" (click)="selectSeat($event, 'silla-ida-seleccionada')" id="{{i+25}}">
+                {{ i + 25}}
               </div>
             </div>
           </div>
@@ -92,14 +92,14 @@
           <div class="bus">
             <div class="fila">
               <div class="silla" *ngFor="let item of [].constructor(24); let i = index" 
-              [ngClass]="vacantSeat(i) ? 'silla-libre' : 'silla-ocupada'" (click)="selectSeat($event, 'silla-regreso-seleccionada')" id="{{i+300}}">
+              [ngClass]="vacantSeat(i+1) ? 'silla-libre' : 'silla-ocupada'" (click)="selectSeat($event, 'silla-regreso-seleccionada')" id="{{i+1}}">
                 {{ i + 1}}
               </div>
             </div>
             <div class="fila">
               <div class="silla" *ngFor="let item of [].constructor(24); let i = index" 
-                [ngClass]="vacantSeat(i) ? 'silla-libre' : 'silla-ocupada'" (click)="selectSeat($event, 'silla-regreso-seleccionada')" id="{{i+400}}">
-                {{ i + 1}}
+                [ngClass]="vacantSeat(i+25) ? 'silla-libre' : 'silla-ocupada'" (click)="selectSeat($event, 'silla-regreso-seleccionada')" id="{{i+25}}">
+                {{ i + 25}}
               </div>
             </div>
           </div>
