@@ -2,11 +2,12 @@ import { Component, OnInit } from '@angular/core';
 import {FormBuilder, FormGroup, Validators, FormControl} from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { StripeService, Elements, Element as StripeElement, ElementsOptions } from "ngx-stripe";
-import swal from 'sweetalert';
+import Swal from 'sweetalert2'
+
 
 @Component({
-  selector: 'app-root',
-  templateUrl: './app.component.html',
+  selector: 'app-root', 
+  templateUrl: './app.component.html', 
   styleUrls: ['./app.component.css']
 })
 export class AppComponent implements OnInit {
@@ -106,8 +107,7 @@ export class AppComponent implements OnInit {
   }
 
   buy() {
-    //console.log((parseInt(this.goingTravelForm.value.cost) + parseInt(this.goingTravelForm.value.cost) * 0.09), parseInt(this.goingTravelForm.value.cost))
-
+    //console.log((parseInt(this.goingTravelForm.value.cost) + parseInt(this.goingTravelForm.value.cost) * 0.09), parseInt(this.goingTravelForm.value.cost))    
     var data = {
       type: this.viajeRedondo ? 'redondo' : 'sencillo',
       seat_1: this.goingTravelForm.value.sillaSalida,
@@ -131,14 +131,27 @@ export class AppComponent implements OnInit {
           console.log(data);
           this.http.post(this.URL_API, data).subscribe(res => {
             console.log(res)
+            Swal.fire({
+              title: 'Pago completado!',
+              text: 'Tu lugar se ha reservado exitosamente',
+              icon: 'success',
+              confirmButtonText: 'Aceptar',
+            }).then( res => { location.reload() });
+            /*
             swal("Pago completado!", "Tu lugar se ha reservado correctamente, con tu correo es suficiente!", "success").then( res => {
               location.reload();
-            });
+            });*/
           });
           //console.log(result.token);
         } else if (result.error) {
           console.log(result.error.message);
-          swal("Error", result.error.message, "error");
+          Swal.fire({
+            title: 'Error',
+            text: result.error.message,
+            icon: 'error',
+            confirmButtonText: 'Aceptar',
+          })
+          //swal("Error", result.error.message, "error");
         }
       });
   }
