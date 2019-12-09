@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import {FormBuilder, FormGroup, Validators, FormControl} from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { StripeService, Elements, Element as StripeElement, ElementsOptions } from "ngx-stripe";
-import swal from 'sweetalert';
 
 @Component({
   selector: 'app-root',
@@ -107,7 +106,7 @@ export class AppComponent implements OnInit {
 
   buy() {
     //console.log((parseInt(this.goingTravelForm.value.cost) + parseInt(this.goingTravelForm.value.cost) * 0.09), parseInt(this.goingTravelForm.value.cost))
-
+    
     var data = {
       type: this.viajeRedondo ? 'redondo' : 'sencillo',
       seat_1: this.goingTravelForm.value.sillaSalida,
@@ -129,16 +128,10 @@ export class AppComponent implements OnInit {
         if (result.token) {
           data.stripeToken = result.token.id;
           console.log(data);
-          this.http.post(this.URL_API, data).subscribe(res => {
-            console.log(res)
-            swal("Pago completado!", "Tu lugar se ha reservado correctamente, con tu correo es suficiente!", "success").then( res => {
-              location.reload();
-            });
-          });
+          this.http.post(this.URL_API, data).subscribe(res => console.log(res));
           //console.log(result.token);
         } else if (result.error) {
           console.log(result.error.message);
-          swal("Error", result.error.message, "error");
         }
       });
   }
@@ -359,7 +352,6 @@ export class AppComponent implements OnInit {
   }
 
   updateValidators(){
-    
     this.viajeRedondo = !this.viajeRedondo;
   
     /*

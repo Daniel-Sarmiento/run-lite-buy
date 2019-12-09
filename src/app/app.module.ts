@@ -4,7 +4,7 @@ import { NgModule } from '@angular/core';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { MatCheckboxModule, MatDatepickerModule, MatNativeDateModule, MatStepperModule, MatInputModule, MatButtonModule, MatSelectModule, MatIconModule, MatToolbarModule, MatCardModule } from '@angular/material';
+import { MatSlideToggleModule, MatCheckboxModule, MatDatepickerModule, MatNativeDateModule, MatStepperModule, MatInputModule, MatButtonModule, MatSelectModule, MatIconModule, MatToolbarModule, MatCardModule } from '@angular/material';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { NgxStripeModule } from 'ngx-stripe';
@@ -20,7 +20,8 @@ import { NgxStripeModule } from 'ngx-stripe';
     NgxStripeModule.forRoot('pk_test_OYuXFtpppcRx1rTc7ifegyhh00hbhxY1oA'),
     FormsModule, 
     ReactiveFormsModule,
-    HttpClientModule, 
+    HttpClientModule,
+    MatSlideToggleModule, 
     MatInputModule, 
     MatButtonModule, 
     MatSelectModule, 

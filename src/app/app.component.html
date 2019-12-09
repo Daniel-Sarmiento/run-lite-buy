@@ -5,8 +5,8 @@
 <div style="margin-top: 50px">
   <mat-card style="width: 700px; margin: 0 auto">
   <mat-horizontal-stepper linear="false" #stepper >
-  <mat-step [stepControl]="searchForm">
-    <form [formGroup]="searchForm">
+  <mat-step>
+    <form [formGroup]="goingTravelForm">
       <ng-template matStepLabel>Encuentra tu viaje</ng-template>
       
       <!-- Destino -->
@@ -20,7 +20,7 @@
               </mat-select>
             </mat-form-field>
 
-          <mat-checkbox #viajeRedondo formControlName="viajeRedondo">Viaje redondo</mat-checkbox>      
+          <mat-slide-toggle (click)="updateValidators()">Viaje redondo</mat-slide-toggle>      
       </div>
 
       <!-- Viaje de Salida-->
@@ -66,22 +66,37 @@
             </div>
           </div>
       </div>
+    </form>
 
-      <div class="form-row" *ngIf="searchForm.value.viajeRedondo">
+    <form [formGroup]="returnTravelForm">
+      <div class="form-row" [hidden]="!viajeRedondo">
         <br>
         <hr>
         <br>
+
+        <!-- Fecha de regreso -->
         <mat-form-field >
-          <input matInput [matDatepickerFilter]="returnDatesFilter" formControlName="fechaRegreso" [min]="minDate" [matDatepicker]="dp2" placeholder="Fecha de regreso">
-          <mat-datepicker-toggle matSuffix [for]="dp2"></mat-datepicker-toggle>
-          <mat-datepicker #dp2 disabled="false"></mat-datepicker>
+          <input matInput (dateChange)="onDateReturnSelected($event)" [matDatepickerFilter]="returnDatesFilter" formControlName="fechaRegreso" [min]="minDate" [matDatepicker]="dp3" placeholder="Fecha de regreso">
+          <mat-datepicker-toggle matSuffix [for]="dp3"></mat-datepicker-toggle>
+          <mat-datepicker #dp3 disabled="false"></mat-datepicker>
         </mat-form-field>
 
+          <!--Hora de regreso -->
           <mat-form-field>
             <mat-label>Hora de Regreso</mat-label>
-            <mat-select>
-              <mat-option *ngFor="let hora of horas" [value]="hora.id">
+            <mat-select formControlName="horaRegreso">
+              <mat-option *ngFor="let hora of returnHoursTravels" [value]="hora.id_departure_hour" (click)="hourReturnSelected(hora.hour)">
                 {{ hora.hour }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+
+          <!-- Clase de regreso -->
+          <mat-form-field>
+            <mat-label>Clase</mat-label>
+            <mat-select formControlName="claseRegreso">
+              <mat-option *ngFor="let class of returnClassesTravels" [value]="class" (click)="classReturnSelected(class)">
+                {{ class }}
               </mat-option>
             </mat-select>
           </mat-form-field>
@@ -92,28 +107,33 @@
           <div class="bus">
             <div class="fila">
               <div class="silla" *ngFor="let item of [].constructor(24); let i = index" 
-              [ngClass]="vacantSeat(i+1) ? 'silla-libre' : 'silla-ocupada'" (click)="selectSeat($event, 'silla-regreso-seleccionada')" id="{{i+1}}">
+              [ngClass]="vacantSeatReturn(i+1) ? 'silla-libre' : 'silla-ocupada'" (click)="selectSeat($event, 'silla-regreso-seleccionada')" id="{{i+200}}">
                 {{ i + 1}}
               </div>
             </div>
             <div class="fila">
-              <div class="silla" *ngFor="let item of [].constructor(24); let i = index" 
-                [ngClass]="vacantSeat(i+25) ? 'silla-libre' : 'silla-ocupada'" (click)="selectSeat($event, 'silla-regreso-seleccionada')" id="{{i+25}}">
+              <div class="silla" *ngFor="let item of [].constructor(26); let i = index" 
+                [ngClass]="vacantSeatReturn(i+25) ? 'silla-libre' : 'silla-ocupada'" (click)="selectSeat($event, 'silla-regreso-seleccionada')" id="{{i+300}}">
                 {{ i + 25}}
               </div>
             </div>
           </div>
       </div>
+    </form>
       
       <br>
+      <!--
         <div>
-          {{ searchForm.value | json }}
+          {{ goingTravelForm.value | json }}
         </div>
-      
+        <div>
+          {{ returnTravelForm.value | json }}
+        </div>
+      -->
       <div>
-        <button mat-button matStepperNext>Next</button>
+        <button mat-button matStepperNext>Siguiente</button>
       </div>
-    </form>
+    
   </mat-step>
   
   <mat-step [stepControl]="stripeTest">
@@ -131,7 +151,7 @@
         <div id="card-element" class="field"></div>
         
         <div>
-            <button mat-button type="submit">Pagar</button>
+            <button mat-button type="submit">Siguiente</button>
         </div>
         
 
@@ -146,14 +166,7 @@
   
      
   </mat-step>
-  <mat-step>
-    <ng-template matStepLabel>Tu ticket</ng-template>
-    You are now done.
-    <div>
-      <button mat-button matStepperPrevious>Back</button>
-      <button mat-button (click)="stepper.reset()">Reset</button>
-    </div>
-  </mat-step>
+  
   </mat-horizontal-stepper>
   </mat-card>
 </div>
